@@ -24,10 +24,10 @@ public class PhotozController {
 		this.photozService = photozService;
 	}
 
-	@GetMapping("/")
-	public String hello() {
-		return "Hello Mom.";
-	}
+	// @GetMapping("/")
+	// public String hello() {
+	// return "Hello Mom.";
+	// }
 
 	@GetMapping("/photoz")
 	public Iterable<Photo> get() {

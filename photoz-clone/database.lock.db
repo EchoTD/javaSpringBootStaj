@@ -1,0 +1,6 @@
+#FileLock
+#Wed Mar 26 14:16:11 TRT 2025
+hostName=echo-x250
+id=195d22abf4f44cd1255f7f095b8cf3d2c9d638622e8
+method=file
+server=192.168.68.147\:44097

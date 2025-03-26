@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PhotoZ Gallery</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+    <header>
+        <h1>PhotoZ Gallery</h1>
+        <nav>
+            <a href="/" class="active">Gallery</a>
+            <a href="/upload.html">Upload</a>
+        </nav>
+    </header>
+
+    <main>
+        <div class="photo-grid" id="photoGrid">
+            <!-- Photos will be loaded here by JavaScript -->
+            <div class="loading">Loading photos...</div>
+        </div>
+    </main>
+
+    <footer>
+        <p>© 2024 PhotoZ Clone</p>
+    </footer>
+
+    <script>
+        // Load photos from API
+        document.addEventListener('DOMContentLoaded', async () => {
+            try {
+                const response = await fetch('/photoz');
+                const photos = await response.json();
+                
+                const grid = document.getElementById('photoGrid');
+                grid.innerHTML = '';
+                
+                if (photos.length === 0) {
+                    grid.innerHTML = '<p>No photos yet. Upload your first photo!</p>';
+                    return;
+                }
+                
+                photos.forEach(photo => {
+                    const photoElement = document.createElement('div');
+                    photoElement.className = 'photo-card';
+                    photoElement.innerHTML = `
+                        <a href="/view-photo.html?id=${photo.id}">
+                            <div class="photo-thumbnail">
+                                <img src="/download/${photo.id}" alt="${photo.filename}">
+                            </div>
+                            <div class="photo-info">
+                                <h3>${photo.filename}</h3>
+                            </div>
+                        </a>
+                        <button onclick="deletePhoto(${photo.id})">Delete</button>
+                    `;
+                    grid.appendChild(photoElement);
+                });
+            } catch (error) {
+                console.error('Error loading photos:', error);
+                document.getElementById('photoGrid').innerHTML = 
+                    '<p class="error">Error loading photos. Please try again.</p>';
+            }
+        });
+
+        async function deletePhoto(id) {
+            if (confirm('Are you sure you want to delete this photo?')) {
+                try {
+                    await fetch(`/photoz/${id}`, { method: 'DELETE' });
+                    location.reload(); // Refresh the gallery
+                } catch (error) {
+                    alert('Error deleting photo');
+                    console.error(error);
+                }
+            }
+        }
+    </script>
+</body>
+</html>

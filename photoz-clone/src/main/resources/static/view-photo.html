@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Photo - PhotoZ</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+    <header>
+        <h1>Photo Details</h1>
+        <nav>
+            <a href="/">Back to Gallery</a>
+            <a href="/upload.html">Upload New</a>
+        </nav>
+    </header>
+
+    <main>
+        <div class="photo-view" id="photoView">
+            <div class="loading">Loading photo...</div>
+        </div>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const photoId = urlParams.get('id');
+            
+            if (!photoId) {
+                window.location.href = '/';
+                return;
+            }
+
+            try {
+                // Get photo metadata
+                const response = await fetch(`/photoz/${photoId}`);
+                if (!response.ok) {
+                    throw new Error('Photo not found');
+                }
+                const photo = await response.json();
+                
+                // Display photo
+                const container = document.getElementById('photoView');
+                container.innerHTML = `
+                    <div class="photo-full">
+                        <img src="/download/${photo.id}" alt="${photo.filename}">
+                    </div>
+                    <div class="photo-meta">
+                        <h2>${photo.filename}</h2>
+                        <p>Type: ${photo.contentType}</p>
+                        <p>ID: ${photo.id}</p>
+                        <button onclick="deletePhoto(${photo.id})">Delete Photo</button>
+                        <a href="/download/${photo.id}" download="${photo.filename}">
+                            <button>Download Original</button>
+                        </a>
+                    </div>
+                `;
+            } catch (error) {
+                document.getElementById('photoView').innerHTML = `
+                    <p class="error">Error loading photo: ${error.message}</p>
+                    <a href="/"><button>Back to Gallery</button></a>
+                `;
+            }
+        });
+
+        async function deletePhoto(id) {
+            if (confirm('Are you sure you want to delete this photo?')) {
+                try {
+                    await fetch(`/photoz/${id}`, { method: 'DELETE' });
+                    window.location.href = '/'; // Return to gallery
+                } catch (error) {
+                    alert('Error deleting photo');
+                    console.error(error);
+                }
+            }
+        }
+    </script>
+</body>
+</html>
