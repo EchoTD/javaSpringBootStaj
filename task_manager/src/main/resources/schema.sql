@@ -1,14 +1,3 @@
-CREATE TABLE IF NOT EXISTS tasks (
-    id BIGINT AUTO_INCREMENT PRIMARY KEY,
-    title VARCHAR(100) NOT NULL,
-    description VARCHAR(500),
-    status VARCHAR(20) NOT NULL,
-    due_date TIMESTAMP,
-    created_at TIMESTAMP NOT NULL,
-    updated_at TIMESTAMP,
-    created_by BIGINT
-);
-
 CREATE TABLE IF NOT EXISTS users (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     username VARCHAR(50) UNIQUE NOT NULL,
@@ -16,5 +5,14 @@ CREATE TABLE IF NOT EXISTS users (
     enabled BOOLEAN DEFAULT TRUE
 );
 
-ALTER TABLE tasks ADD COLUMN user_id BIGINT;
-ALTER TABLE tasks ADD CONSTRAINT fk_user FOREIGN KEY (user_id) REFERENCES users(id);
+CREATE TABLE IF NOT EXISTS tasks (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR(100) NOT NULL,
+    description VARCHAR(500),
+    status VARCHAR(20) NOT NULL,
+    due_date TIMESTAMP,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP,
+    user_id BIGINT,
+    CONSTRAINT fk_user FOREIGN KEY (user_id) REFERENCES users(id)
+);
