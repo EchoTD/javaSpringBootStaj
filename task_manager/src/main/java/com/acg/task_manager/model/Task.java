@@ -5,14 +5,19 @@ import java.time.LocalDateTime;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Table;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
+
 @Table("TASKS")
 public class Task {
 
 	@Id
 	private Long id;
-
+	@NotBlank(message = "Title must not be empty.")
+	@Size(min = 2, max = 100, message = "Title must be in range of 2 to 100 characters.")
 	private String title;
 
+	@Size(max = 500, message = "Description too long (max 500 characters).")
 	private String description;
 
 	private TaskStatus status = TaskStatus.TODO;
@@ -23,7 +28,7 @@ public class Task {
 
 	private LocalDateTime updatedAt;
 
-	private Long createdBy;
+	// private Long createdBy;
 
 	public Long getId() {
 		return id;
@@ -81,11 +86,11 @@ public class Task {
 		this.updatedAt = updatedAt;
 	}
 
-	public Long getCreatedBy() {
-		return createdBy;
-	}
-
-	public void setCreatedBy(Long createdBy) {
-		this.createdBy = createdBy;
-	}
+	// public Long getCreatedBy() {
+	// return createdBy;
+	// }
+	//
+	// public void setCreatedBy(Long createdBy) {
+	// this.createdBy = createdBy;
+	// }
 }
