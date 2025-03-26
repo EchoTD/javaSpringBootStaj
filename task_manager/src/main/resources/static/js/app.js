@@ -6,6 +6,7 @@ document.addEventListener("DOMContentLoaded", function () {
         event.preventDefault();
         const title = document.getElementById("task-title").value;
         const description = document.getElementById("task-desc").value;
+        const dueDate = document.getElementById("dueDate").value;
 
         fetch("/tasks", {
             method: "POST",
@@ -31,7 +32,7 @@ function loadTasks() {
             list.innerHTML = "";
             tasks.forEach(task => {
                 const li = document.createElement("li");
-                li.textContent = `${task.title} - ${task.description}`;
+                li.textContent = `${task.title} - ${task.description} - ${task.dueDate} -- ${task.status}`;
 
                 // Delete button
                 const deleteButton = document.createElement("button");

@@ -7,7 +7,7 @@ import com.acg.task_manager.model.TaskStatus;
 public class TaskRequest {
 	private String title;
 	private String description;
-	private TaskStatus status;
+	private TaskStatus status = TaskStatus.TODO;
 	private LocalDateTime dueDate;
 
 	public String getTitle() {
