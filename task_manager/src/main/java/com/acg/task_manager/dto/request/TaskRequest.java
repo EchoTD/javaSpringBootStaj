@@ -2,9 +2,12 @@ package com.acg.task_manager.dto.request;
 
 import java.time.LocalDateTime;
 
+import com.acg.task_manager.model.TaskStatus;
+
 public class TaskRequest {
 	private String title;
 	private String description;
+	private TaskStatus status;
 	private LocalDateTime dueDate;
 
 	public String getTitle() {
@@ -29,5 +32,13 @@ public class TaskRequest {
 
 	public void setDueDate(LocalDateTime dueDate) {
 		this.dueDate = dueDate;
+	}
+
+	public TaskStatus getStatus() {
+		return status;
+	}
+
+	public void setStatus(TaskStatus status) {
+		this.status = status;
 	}
 }
